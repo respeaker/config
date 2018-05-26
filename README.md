@@ -1,14 +1,15 @@
-# Armbian configuration utility
+# ReSpeaker V2 configuration utility
 
 Utility for configuring your board, adjusting services and installing applications. It comes with Armbian by default.
 
 Login as root and type:
 
-	armbian-config
+	os-config
 
 ![](images/animated.gif)
 
 - **system**
+<!---
 	- install to SATA, eMMC, NAND or USB
 	- freeze and unfreeze kernel and BSP upgrades
 	- switching between avaliable kernels and nightly builds
@@ -20,7 +21,9 @@ Login as root and type:
 	- toggle desktop and login manager (desktop builds)
 	- adjusting the display resolution (some boards)
 	- enabling read only root filesystem (Ubuntu)
+--->
 - **network**
+<!---
 	- select dynamic or static IP address
 	- hotspot management. Automatic detection of: nl80211, realtek, 802.11n, 802.11a and 802.11ac
 	- iperf3. Toogle bandwidth measuring server
@@ -28,12 +31,16 @@ Login as root and type:
 	- install IR support
 	- install support, pair and connect Bluetooth devices
 	- edit IFUPDOWN interfaces
+--->
 - **personal**
+<!---
 	- change timezone, languages and hostname
 	- select welcome screen items
+--->
 - **software**
-	- softy
-		- [TV headend](https://tvheadend.org/) *(IPTV server)*
+<!---
+ 	- softy
+ 		- [TV headend](https://tvheadend.org/) *(IPTV server)*
 		- [Syncthing](https://syncthing.net/) *(personal cloud)*
 		- [SoftEther VPN server](https://www.softether.org/) *(VPN server)*
 		- [ExaGear desktop](https://eltechs.com/product/exagear-desktop) *(x86 emulator)*
@@ -47,9 +54,11 @@ Login as root and type:
 		- [PI hole](https://pi-hole.net) *(ad blocker)*
 		- [UrBackup](https://www.urbackup.org/) *(client/server backup system)*
 		- [MiniDLNA](http://minidlna.sourceforge.net/) *(media sharing)*
+
 	- monitoring tools
 	- create diagnostics report
 	- toggle kernel headers, RDP service, Thunderbird and Libreoffice (desktop builds)
+--->
 - **help**
 	- Links to documentation, support and sources
 
@@ -60,7 +69,7 @@ Login as root and type:
 	resolvconf debconf-utils unzip build-essential html2text apt-transport-https html2text dirmngr \
 	software-properties-common libpam-google-authenticator qrencode
 
-	git clone https://github.com/armbian/config
+	git clone https://github.com/respeaker/os-config
 	cd config
 	bash debian-config
 
