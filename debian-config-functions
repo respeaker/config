@@ -31,7 +31,7 @@ function main(){
 	DIALOG_CANCEL=1
 	DIALOG_ESC=255
 
-	[[ -f /etc/armbian-release ]] && source /etc/armbian-release && ARMBIAN="Armbian $VERSION $IMAGE_TYPE";
+	[[ -f /etc/os-release ]] && source /etc/os-release && ARMBIAN="Debian $VERSION $IMAGE_TYPE";
 	DISTRO=$(lsb_release -is)
 	DISTROID=$(lsb_release -sc)
 	KERNELID=$(uname -r)
@@ -45,7 +45,7 @@ function main(){
 	[[ "$LINUXFAMILY" == "sunxi64" ]] && OVERLAYDIR="/boot/dtb/allwinner/overlay";
 	# detect desktop
 	check_desktop
-	dialog --backtitle "$BACKTITLE" --title "Please wait" --infobox "\nLoading Armbian configuration utility ... " 5 45
+	dialog --backtitle "$BACKTITLE" --title "Please wait" --infobox "\nLoading respeaker v2 configuration utility ... " 5 50
 	sleep 1
 
 }

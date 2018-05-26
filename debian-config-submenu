@@ -39,7 +39,7 @@ while true; do
 	fi
 
 	# armbian specific function
-	if [[ -f /etc/armbian-release ]]; then
+	if [[ -f /etc/os-release ]]; then
 		if [[ -n "${mark}" ]]; then
 				LIST+=( "Defreeze" "Enable kernel upgrades" )
 			else
