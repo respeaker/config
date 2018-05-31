@@ -39,7 +39,7 @@ while true; do
 	fi
 
 	# armbian specific function
-	if [[ -f /etc/armbian-release ]]; then
+	if [[ -f /etc/os-release && "$BOARD" != "respeakerv2" ]]; then
 		if [[ -n "${mark}" ]]; then
 				LIST+=( "Defreeze" "Enable kernel upgrades" )
 			else
@@ -55,7 +55,7 @@ while true; do
 		&& LIST+=( "Stable" "Switch to stable builds" )
 	fi
 
-	[[ -n $(grep -w "#kernel.printk" /etc/sysctl.conf ) ]] && LIST+=( "Lowlevel" "Stop low-level messages on console" )
+	[[ -n $(grep -w "#kernel.printk" /etc/sysctl.conf ) && "$BOARD" != "respeakerv2" ]] && LIST+=( "Lowlevel" "Stop low-level messages on console" )
 
 	[[ -f /boot/armbianEnv.txt ]] && LIST+=( "Bootenv" "Edit boot environment" )
 	[[ -f /boot/boot.ini ]] && LIST+=( "Bootscript" "Edit boot script" )
@@ -71,30 +71,37 @@ while true; do
 	| wc -l) -gt 1 && -z "${mark}" ]] && LIST+=( "Switch" "Switch to alternative kernels" )
 
 	LIST+=( "SSH" "Reconfigure SSH daemon" )
-	LIST+=( "Firmware" "Run apt update & apt upgrade" )
+	[[  "$BOARD" != "respeakerv2"  ]] && LIST+=( "Firmware" "Run apt update & apt upgrade" )
+
 	[[ "$LINUXFAMILY" = sun*i && "$BRANCH" = "default" && \
 	-n $(bin2fex </boot/script.bin 2>/dev/null | grep -w "hdmi_used = 1") ]] && LIST+=( "Display" "set the display resolution" )
 
 	# desktop
-	if [[ -n $DISPLAY_MANAGER ]]; then
-			LIST+=( "Desktop" "Disable desktop" )
-			if ! check_if_installed mpv ; then
-				LIST+=( "Default" "Install desktop with browser and extras" )
-			fi
-			[[ $DISPLAY_MANAGER == 'nodm' ]] && 			LIST+=( "Lightdm" "Switch to standard login manager" )
-			[[ $DISPLAY_MANAGER == 'lightdm' ]] && 			LIST+=( "Nodm" "Switch to simple auto login manager" )
-	else
-			if [[ -n $DESKTOP_INSTALLED ]]; then
-															LIST+=( "Desktop" "Enable desktop" )
-															if ! check_if_installed mpv ; then
-																LIST+=( "Default" "Install desktop with browser and extras" )
-															fi
-				else
-															LIST+=( "Minimal" "Install minimal desktop" )
-															if ! check_if_installed mpv ; then
-																LIST+=( "Default" "Install desktop with browser and extras" )
-															fi
-			fi
+	if  [[ "$BOARD" != "respeakerv2" ]]; then
+		if [[ -n $DISPLAY_MANAGER ]]; then
+				LIST+=( "Desktop" "Disable desktop" )
+				if ! check_if_installed mpv ; then
+					LIST+=( "Default" "Install desktop with browser and extras" )
+				fi
+				[[ $DISPLAY_MANAGER == 'nodm' ]] && 			LIST+=( "Lightdm" "Switch to standard login manager" )
+				[[ $DISPLAY_MANAGER == 'lightdm' ]] && 			LIST+=( "Nodm" "Switch to simple auto login manager" )
+		else
+				if [[ -n $DESKTOP_INSTALLED ]]; then
+																LIST+=( "Desktop" "Enable desktop" )
+																if ! check_if_installed mpv ; then
+																	LIST+=( "Default" "Install desktop with browser and extras" )
+																fi
+					else
+																LIST+=( "Minimal" "Install minimal desktop" )
+																if ! check_if_installed mpv ; then
+																	LIST+=( "Default" "Install desktop with browser and extras" )
+																fi
+				fi
+		fi
+	fi
+	
+	if  [[ "$BOARD" = "respeakerv2" ]]; then
+		LIST+=( "Display" "set the display resolution" )
 	fi
 
 	# overlayroot

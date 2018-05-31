@@ -27,6 +27,7 @@ fi
 
 
 
+
 #
 # check if we have internet connection to install dependencies
 #
@@ -81,13 +82,13 @@ do
 	LIST+=( "System" "System and security settings" )
 	LIST+=( "Network" "Wired, wireless, Bluetooth, access point" )
 	LIST+=( "Personal" "Timezone, language, hostname" )
-	LIST+=( "Software" "System and 3rd party software install" )
+	#LIST+=( "Software" "System and 3rd party software install" )
 	LIST+=( "Help" "Documentation, support, sources" )
 
 	# count number of menu items to adjust window size
 	LISTLENGHT="$((11+${#LIST[@]}/2))"
 	BOXLENGHT=${#LIST[@]}
-	MENUTITLE="Configure $DISTRO $DISTROID based \Z1Armbian\Z0 "
+	MENUTITLE="Configure \Z1$DISTRO $DISTROID\Z0 "
 	[[ -n "${BOARD_NAME/ /}" ]] && MENUTITLE=$MENUTITLE"for the \Z1${BOARD_NAME}\Z0 "
 
 	# main dialog routine
@@ -98,8 +99,8 @@ do
 	[[ "$TITLELENGHT" -lt 60 ]] && TITLELENGHT="60"
 
 	exec 3>&1
-	selection=$(dialog --colors --backtitle "$BACKTITLE" --title " armbian-config " --clear \
-	--cancel-label "Cancel" --menu "\n$MENUTITLE \n \nSupport: \Z1https://www.armbian.com\Z0\n " \
+	selection=$(dialog --colors --backtitle "$BACKTITLE" --title " os-config " --clear \
+	--cancel-label "Cancel" --menu "\n$MENUTITLE \n \nSupport: \Z1http://seeedstudio.com/forum/ \Z0\n " \
 	$LISTLENGHT ${TITLELENGHT} $BOXLENGHT "${LIST[@]}" 2>&1 1>&3)
 	exit_status=$?
 	exec 3>&-
@@ -129,8 +130,8 @@ do
 		"Help" )
 			show_box "Info" "This tool provides a straightforward way of configuring. \
 			\n \nAlthough it can be run at any time, some of the options may have difficulties if you alter system settings manually.\n\
-			\n\Z1Documentation:\Z0     https://docs.armbian.com\n\n\Z1Support:\Z0           https://forum.armbian.com\n
-			\n\Z1Sources:\Z0           https://git.armbian.com" "18"
+			\n\Z1Documentation:\Z0     http://wiki.seeedstudio.com/ReSpeaker_Core_v2.0\Z0           http://seeedstudio.com/forum/\n
+			\n\Z1Sources:\Z0           https://github.com/respeaker/os-config" "18"
 		;;
 	esac
 done

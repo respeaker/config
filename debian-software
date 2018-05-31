@@ -491,8 +491,8 @@ esac
 
 systemctl status log2ram >/dev/null 2>&1 && (systemctl stop log2ram ; systemctl disable log2ram >/dev/null 2>&1; rm /etc/cron.daily/log2ram)
 export APT_LISTCHANGES_FRONTEND=none
-if [ -f /etc/armbian-release ]; then
-	. /etc/armbian-release
+if [ -f /etc/os-release ]; then
+	. /etc/os-release
 else
 	sed -i "s/^# en_US.UTF-8/en_US.UTF-8/" /etc/locale.gen
 	locale-gen
