@@ -175,33 +175,67 @@ function jobs ()
 	# Set the display resolution
 	#
 	"Display" )
-		# show display modes menu
-		if [[ -f /usr/bin/h3disp ]]; then
-			# h3 boards
-			get_h3modes
-			dialog --title " Display output type " --colors --help-button --help-label "Cancel" --no-label "DVI" --yes-label "HDMI" \
-			--backtitle "$BACKTITLE" --yesno "\nIn case you use an HDMI-to-DVI converter choose DVI!" 7 57
-			output_type=$?
-			if [[ $output_type = 0 || $output_type = 1 ]]; then
-				if [[ $output_type = 0 ]]; then
-					display_cmd="h3disp -m $SCREEN_RESOLUTION";
-					else
-					display_cmd="h3disp -m $SCREEN_RESOLUTION -d";
+		if  [[ "$BOARD" != "respeakerv2" ]]; then
+			# show display modes menu
+			if [[ -f /usr/bin/h3disp ]]; then
+				# h3 boards
+				get_h3modes
+				dialog --title " Display output type " --colors --help-button --help-label "Cancel" --no-label "DVI" --yes-label "HDMI" \
+				--backtitle "$BACKTITLE" --yesno "\nIn case you use an HDMI-to-DVI converter choose DVI!" 7 57
+				output_type=$?
+				if [[ $output_type = 0 || $output_type = 1 ]]; then
+					if [[ $output_type = 0 ]]; then
+						display_cmd="h3disp -m $SCREEN_RESOLUTION";
+						else
+						display_cmd="h3disp -m $SCREEN_RESOLUTION -d";
+					fi
+
+
 				fi
+			else
+				# a20 boards
+				get_a20modes
+				display_cmd="sed -i \"s/^disp_mode=.*/disp_mode=$SCREEN_RESOLUTION/\" /boot/armbianEnv.txt";
+			fi
 
-
+			dialog --title " Display resolution " --colors --no-label "Cancel" --backtitle "$BACKTITLE" --yesno \
+			"\nSwitching to \Z1$SCREEN_RESOLUTION\Z0 and reboot?" 7 42
+			if [[ $? = 0 ]]; then
+				eval $display_cmd > /dev/null
+				reboot
 			fi
 		else
-			# a20 boards
-			get_a20modes
-			display_cmd="sed -i \"s/^disp_mode=.*/disp_mode=$SCREEN_RESOLUTION/\" /boot/armbianEnv.txt";
-		fi
+			USER="$(who | grep :0\) | cut -f 1 -d ' ')"
+			export XAUTHORITY=/home/$USER/.Xauthority
+			export DISPLAY=:0
+			HDMI_STATUS="$(cat /sys/class/drm/card0-HDMI-A-1/status)"
+			if [ "${HDMI_STATUS}" = connected ]; then
+				LIST_CONST=1
+				# create menu
+				MOTD=( "1" "Default")
+				while read line
+				do 					
+					let LIST_CONST=LIST_CONST+1
+					MOTD+=( "${LIST_CONST}" "$line ")					
+				done <<< "$(xrandr | sed '1,2d' | awk  'BEGIN{FS=" ";RS="\n"} {print $1}')"
+				exec 3>&1
+					selection=$(dialog --clear --colors --backtitle "$BACKTITLE" \
+					--title " Display resolution " --menu "Choose what you want to enable or disable:" 15 40 ${LIST_CONST} "${MOTD[@]}" 2>&1 1>&3)
+					exit_status=$?
+				exec 3>&-	
 
-		dialog --title " Display resolution " --colors --no-label "Cancel" --backtitle "$BACKTITLE" --yesno \
-		"\nSwitching to \Z1$SCREEN_RESOLUTION\Z0 and reboot?" 7 42
-		if [[ $? = 0 ]]; then
-			eval $display_cmd > /dev/null
-			reboot
+				xrandr --output HDMI-1 --mode ${MOTD[${selection}*2-1]}
+
+				#get Modes
+				line_num=$(cat /etc/X11/xorg.conf | grep -n Modes | awk 'BEGIN{FS=":";RS=""}{print $1}')
+				#delete Modes first
+				sed -i "${line_num}d" /etc/X11/xorg.conf
+				#insert New Modes
+				sed -i "${line_num}i\ \ \ \ \ \ \ \ Modes \"${MOTD[${selection}*2-1]}\" \"1920x1080\" \"1280x720\" \"800x600\"" /etc/X11/xorg.conf
+			else
+				#xrandr --output HDMI-1 --off
+				echo ">>> "
+			fi	
 		fi
 	;;
 
@@ -1006,7 +1040,7 @@ function jobs ()
 
 			DIALOG_CANCEL=2
 			DIALOG_ESC=255
-			LIST_CONST=7
+			LIST_CONST=9
 
 			# variables cleanup
 			PermitRootLogin="";
@@ -1026,8 +1060,9 @@ function jobs ()
 			MOTD=( "PermitRootLogin" "Allow root login" "$PermitRootLogin" )
 			MOTD+=( "PasswordAuthentication" "Password login" "$PasswordAuthentication" )
 			MOTD+=( "PubkeyAuthentication" "SSH key login" "$PubkeyAuthentication" )
-			MOTD+=( "PhoneAuthentication" "Mobile phone one-time passcode" "$PhoneAuthentication" )
+			#MOTD+=( "PhoneAuthentication" "Mobile phone one-time passcode" "$PhoneAuthentication" )
 			LISTLENGHT="$(($LIST_CONST+${#MOTD[@]}/2))"
+			
 
 			Buttons="--no-cancel --ok-label "Save" --help-button --help-label Cancel"
 			if [[ $PhoneAuthentication == "on" ]]; then
@@ -1039,7 +1074,7 @@ function jobs ()
 
 			exec 3>&1
 				selection=$(dialog $Buttons --backtitle "$BACKTITLE" --title " Toggle sshd options " --clear --checklist \
-				"\nChoose what you want to enable or disable:\n " $LISTLENGHT 80 21 "${MOTD[@]}" 2>&1 1>&3)
+				"\nChoose what you want to enable or disable:\n " $LISTLENGHT 80 24 "${MOTD[@]}" 2>&1 1>&3)
 				exit_status=$?
 			exec 3>&-
 
@@ -1204,7 +1239,7 @@ function jobs ()
 			dialog --title "Switching board config" --backtitle "$BACKTITLE" --yes-label "Reboot" --no-label "Cancel" --yesno "\nReboot to $TARGET_BOARD settings?" 7 $BOX_LENGHT
 			if [[ $? = 0 ]]; then
 				sed -i "s/^fdt_file=.*/fdt_file=$TARGET_BOARD/" /boot/armbianEnv.txt 2> /dev/null && grep -q "fdt_file=$TARGET_BOARD" /boot/armbianEnv.txt 2> /dev/null || echo "fdt_file=$TARGET_BOARD" >> /boot/armbianEnv.txt
-				[[ "$LINUXFAMILY" = odroidxu4 ]] && sed -i "s/^fdt_file/board_name/" /boot/armbianEnv.txt && sed -i "s/^BOARD_NAME.*/BOARD_NAME=\"Odroid ${TARGET_BOARD^^}\"/" /etc/armbian-release
+				[[ "$LINUXFAMILY" = odroidxu4 ]] && sed -i "s/^fdt_file/board_name/" /boot/armbianEnv.txt && sed -i "s/^BOARD_NAME.*/BOARD_NAME=\"Odroid ${TARGET_BOARD^^}\"/" /etc/os-release
 				reboot;
 			fi
 			fi
