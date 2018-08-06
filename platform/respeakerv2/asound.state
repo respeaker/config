@@ -2,7 +2,7 @@ state.seeed8micvoicec {
 	control.1 {
 		iface MIXER
 		name 'CH1 volume'
-		value 161
+		value 203
 		comment {
 			access 'read write'
 			type INTEGER
@@ -10,13 +10,13 @@ state.seeed8micvoicec {
 			range '0 - 255'
 			dbmin -11925
 			dbmax 7200
-			dbvalue.0 150
+			dbvalue.0 3300
 		}
 	}
 	control.2 {
 		iface MIXER
 		name 'CH2 volume'
-		value 161
+		value 203
 		comment {
 			access 'read write'
 			type INTEGER
@@ -24,13 +24,13 @@ state.seeed8micvoicec {
 			range '0 - 255'
 			dbmin -11925
 			dbmax 7200
-			dbvalue.0 150
+			dbvalue.0 3300
 		}
 	}
 	control.3 {
 		iface MIXER
 		name 'CH3 volume'
-		value 161
+		value 203
 		comment {
 			access 'read write'
 			type INTEGER
@@ -38,13 +38,13 @@ state.seeed8micvoicec {
 			range '0 - 255'
 			dbmin -11925
 			dbmax 7200
-			dbvalue.0 150
+			dbvalue.0 3300
 		}
 	}
 	control.4 {
 		iface MIXER
 		name 'CH4 volume'
-		value 161
+		value 203
 		comment {
 			access 'read write'
 			type INTEGER
@@ -52,13 +52,13 @@ state.seeed8micvoicec {
 			range '0 - 255'
 			dbmin -11925
 			dbmax 7200
-			dbvalue.0 150
+			dbvalue.0 3300
 		}
 	}
 	control.5 {
 		iface MIXER
 		name 'ADC1 PGA gain'
-		value 13
+		value 0
 		comment {
 			access 'read write'
 			type INTEGER
@@ -66,13 +66,13 @@ state.seeed8micvoicec {
 			range '0 - 31'
 			dbmin 0
 			dbmax 3100
-			dbvalue.0 1300
+			dbvalue.0 0
 		}
 	}
 	control.6 {
 		iface MIXER
 		name 'ADC2 PGA gain'
-		value 13
+		value 0
 		comment {
 			access 'read write'
 			type INTEGER
@@ -80,13 +80,13 @@ state.seeed8micvoicec {
 			range '0 - 31'
 			dbmin 0
 			dbmax 3100
-			dbvalue.0 1300
+			dbvalue.0 0
 		}
 	}
 	control.7 {
 		iface MIXER
 		name 'ADC3 PGA gain'
-		value 13
+		value 0
 		comment {
 			access 'read write'
 			type INTEGER
@@ -94,13 +94,13 @@ state.seeed8micvoicec {
 			range '0 - 31'
 			dbmin 0
 			dbmax 3100
-			dbvalue.0 1300
+			dbvalue.0 0
 		}
 	}
 	control.8 {
 		iface MIXER
 		name 'ADC4 PGA gain'
-		value 13
+		value 0
 		comment {
 			access 'read write'
 			type INTEGER
@@ -108,13 +108,13 @@ state.seeed8micvoicec {
 			range '0 - 31'
 			dbmin 0
 			dbmax 3100
-			dbvalue.0 1300
+			dbvalue.0 0
 		}
 	}
 	control.9 {
 		iface MIXER
 		name 'CH5 volume'
-		value 161
+		value 203
 		comment {
 			access 'read write'
 			type INTEGER
@@ -122,13 +122,13 @@ state.seeed8micvoicec {
 			range '0 - 255'
 			dbmin -11925
 			dbmax 7200
-			dbvalue.0 150
+			dbvalue.0 3300
 		}
 	}
 	control.10 {
 		iface MIXER
 		name 'CH6 volume'
-		value 161
+		value 203
 		comment {
 			access 'read write'
 			type INTEGER
@@ -136,13 +136,13 @@ state.seeed8micvoicec {
 			range '0 - 255'
 			dbmin -11925
 			dbmax 7200
-			dbvalue.0 150
+			dbvalue.0 3300
 		}
 	}
 	control.11 {
 		iface MIXER
 		name 'CH7 volume'
-		value 161
+		value 203
 		comment {
 			access 'read write'
 			type INTEGER
@@ -150,13 +150,13 @@ state.seeed8micvoicec {
 			range '0 - 255'
 			dbmin -11925
 			dbmax 7200
-			dbvalue.0 150
+			dbvalue.0 3300
 		}
 	}
 	control.12 {
 		iface MIXER
 		name 'CH8 volume'
-		value 161
+		value 170
 		comment {
 			access 'read write'
 			type INTEGER
@@ -164,13 +164,13 @@ state.seeed8micvoicec {
 			range '0 - 255'
 			dbmin -11925
 			dbmax 7200
-			dbvalue.0 150
+			dbvalue.0 825
 		}
 	}
 	control.13 {
 		iface MIXER
 		name 'ADC5 PGA gain'
-		value 13
+		value 0
 		comment {
 			access 'read write'
 			type INTEGER
@@ -178,13 +178,13 @@ state.seeed8micvoicec {
 			range '0 - 31'
 			dbmin 0
 			dbmax 3100
-			dbvalue.0 1300
+			dbvalue.0 0
 		}
 	}
 	control.14 {
 		iface MIXER
 		name 'ADC6 PGA gain'
-		value 13
+		value 0
 		comment {
 			access 'read write'
 			type INTEGER
@@ -192,13 +192,13 @@ state.seeed8micvoicec {
 			range '0 - 31'
 			dbmin 0
 			dbmax 3100
-			dbvalue.0 1300
+			dbvalue.0 0
 		}
 	}
 	control.15 {
 		iface MIXER
 		name 'ADC7 PGA gain'
-		value 13
+		value 0
 		comment {
 			access 'read write'
 			type INTEGER
@@ -206,13 +206,13 @@ state.seeed8micvoicec {
 			range '0 - 31'
 			dbmin 0
 			dbmax 3100
-			dbvalue.0 1300
+			dbvalue.0 0
 		}
 	}
 	control.16 {
 		iface MIXER
 		name 'ADC8 PGA gain'
-		value 13
+		value 0
 		comment {
 			access 'read write'
 			type INTEGER
@@ -220,14 +220,14 @@ state.seeed8micvoicec {
 			range '0 - 31'
 			dbmin 0
 			dbmax 3100
-			dbvalue.0 1300
+			dbvalue.0 0
 		}
 	}
 	control.17 {
 		iface MIXER
 		name 'Playback Volume'
-		value.0 25
-		value.1 25
+		value.0 21
+		value.1 21
 		comment {
 			access 'read write'
 			type INTEGER
@@ -235,12 +235,8 @@ state.seeed8micvoicec {
 			range '0 - 31'
 			dbmin -1725
 			dbmax 600
-			dbvalue.0 150
-			dbvalue.1 150
+			dbvalue.0 -150
+			dbvalue.1 -150
 		}
-	}
-}
-state.bluetoothvoice {
-	control {
 	}
 }
